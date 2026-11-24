@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rijul Singhal · Data, ML and Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1017;--panel:#131824;--panel2:#181e2d;--line:#252d42;--ink:#d3d9ea;--mute:#8590ab;--blue:#7aa2f7;--mint:#9ece6a;--amber:#e0af68;--rose:#f7768e;--vio:#bb9af7;--cyan:#7dcfff;--on:#0d1017;
+--disp:"Space Grotesk","Segoe UI",system-ui,sans-serif;--body:"Inter","Segoe UI",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eceef5;--panel:#f8f9fc;--panel2:#e3e6f0;--line:#c9cfe0;--ink:#2b3150;--mute:#5d6685;--blue:#2e5bd1;--mint:#38751a;--amber:#966010;--rose:#b4233f;--vio:#6a3fc2;--cyan:#0a6a96;--on:#fff}}
+:root[data-theme="light"]{--bg:#eceef5;--panel:#f8f9fc;--panel2:#e3e6f0;--line:#c9cfe0;--ink:#2b3150;--mute:#5d6685;--blue:#2e5bd1;--mint:#38751a;--amber:#966010;--rose:#b4233f;--vio:#6a3fc2;--cyan:#0a6a96;--on:#fff}
+html{scroll-behavior:smooth;scroll-padding-top:calc(4.5rem + env(safe-area-inset-top,0px))}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.7 var(--body);-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:20}
+a{color:var(--blue)}
+[hidden]{display:none!important}
+.repo .code{font:500 .85rem var(--mono)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.w{max-width:66rem;margin:0 auto;padding:0 1.25rem}
+code,.m{font-family:var(--mono)}
+h1,h2,h3{font-family:var(--disp);margin:0;line-height:1.1}
+#prog{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:2px;width:0;background:linear-gradient(90deg,var(--blue),var(--vio));z-index:30}
+/* nav */
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.bar .w{display:flex;align-items:center;gap:1.2rem;height:3.6rem}
+.brand{font:500 .95rem var(--mono);color:var(--ink);text-decoration:none;margin-right:auto;white-space:nowrap}
+.brand i{color:var(--mint);font-style:normal}.brand b{color:var(--blue);font-weight:500}
+header.bar nav{display:flex;gap:1.3rem;font:400 .85rem var(--mono)}
+header.bar nav a{color:var(--mute);text-decoration:none}header.bar nav a:hover{color:var(--ink)}
+.chip{font:400 .8rem var(--mono);color:var(--mute);background:var(--panel);border:1px solid var(--line);border-radius:.4rem;padding:.35rem .6rem;cursor:pointer}
+.chip:hover{color:var(--ink);border-color:var(--blue)}
+kbd{font:inherit;border:1px solid var(--line);border-radius:.25rem;padding:0 .3rem;margin-left:.4rem;color:var(--mute)}
+/* hero */
+.hero{padding:4.5rem 0 3.5rem;display:grid;grid-template-columns:1.05fr 1fr;gap:3rem;align-items:center}
+.hero h1{font-size:clamp(2.9rem,7.2vw,5.4rem);font-weight:700;letter-spacing:-.04em}
+.hero h1 span{color:var(--blue)}
+.hero .tag{font:400 1.05rem var(--mono);color:var(--mute);margin:0 0 1.2rem}
+.hero .tag b{color:var(--mint);font-weight:500}
+.hero p.lede{font-size:1.2rem;max-width:30rem;margin:1.4rem 0 0}
+.cta{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.8rem}
+.btn{font:500 .9rem var(--mono);text-decoration:none;padding:.7rem 1.1rem;border-radius:.45rem;border:1px solid var(--line);color:var(--ink);background:var(--panel);cursor:pointer}
+.btn.p{background:var(--blue);border-color:var(--blue);color:var(--on)}
+.btn:hover{border-color:var(--blue)}
+/* terminal */
+.win{background:var(--panel);border:1px solid var(--line);border-radius:.8rem;overflow:hidden;box-shadow:0 20px 50px -20px #000a}
+.win .tb{display:flex;align-items:center;gap:.4rem;padding:.6rem .9rem;background:var(--panel2);border-bottom:1px solid var(--line);font:400 .78rem var(--mono);color:var(--mute)}
+.win .tb s{width:.7rem;height:.7rem;border-radius:50%;background:var(--rose);text-decoration:none}
+.win .tb s:nth-child(2){background:var(--amber)}.win .tb s:nth-child(3){background:var(--mint)}
+.win .tb span{margin-left:.6rem}
+#out{font:400 .86rem/1.65 var(--mono);padding:1rem;height:21rem;overflow-y:auto;overscroll-behavior:contain}
+#out .ln{white-space:pre-wrap;word-break:break-word}
+#out .c{color:var(--mute)}
+.pr{color:var(--mint)}.hl{color:var(--blue)}.am{color:var(--amber)}.vi{color:var(--vio)}
+.row{display:flex;gap:.5rem;align-items:center;padding:.7rem 1rem;border-top:1px solid var(--line);font:400 .86rem var(--mono)}
+.row input{flex:1;min-width:0;background:none;border:0;color:var(--ink);font:inherit;caret-color:var(--mint)}
+.row input:focus-visible{outline:none}
+.hint{display:flex;flex-wrap:wrap;gap:.4rem;padding:.6rem 1rem .9rem}
+.hint button{font:400 .78rem var(--mono);background:none;border:1px solid var(--line);color:var(--blue);border-radius:2rem;padding:.2rem .7rem;cursor:pointer}
+.hint button:hover{background:var(--panel2)}
+/* sections */
+section{padding:4.5rem 0;border-top:1px solid var(--line)}
+.sh{display:flex;align-items:baseline;gap:.8rem;margin-bottom:2.2rem;flex-wrap:wrap}
+.sh h2{font-size:clamp(1.8rem,4vw,2.5rem);letter-spacing:-.02em}
+.sh code{color:var(--mute);font-size:.9rem}
+.log{border-left:2px solid var(--line);margin-left:.45rem;padding-left:1.6rem;position:relative}
+.log::before{content:"";position:absolute;left:-.45rem;top:.55rem;width:.7rem;height:.7rem;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px var(--bg)}
+.log h3{font-size:1.5rem}
+.log .meta{font:400 .85rem var(--mono);color:var(--mute);margin:.3rem 0 1rem}
+.log ul{margin:1.2rem 0 0;padding-left:1.1rem}.log li{margin:.5rem 0}.log li::marker{color:var(--blue)}
+.flow{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1.8rem}
+.pipe{display:flex;align-items:stretch;gap:0}
+.pipe button{flex:1;font:500 .9rem var(--mono);background:var(--panel);border:1px solid var(--line);color:var(--ink);padding:.9rem .4rem;cursor:pointer;position:relative;border-top-width:4px}
+.pipe button[data-l=bronze]{border-top-color:#cd7f32}.pipe button[data-l=silver]{border-top-color:#9aa5b8}.pipe button[data-l=gold]{border-top-color:#e6b422}
+.pipe button[aria-selected=true]{background:var(--panel2);border-color:var(--blue)}
+.pipe i{align-self:center;width:1.6rem;height:2px;background:repeating-linear-gradient(90deg,var(--blue) 0 6px,transparent 6px 10px);background-size:20px 2px;animation:flow 1s linear infinite;flex:none}
+@keyframes flow{to{background-position:20px 0}}
+.pd{background:var(--panel);border:1px solid var(--line);border-radius:.5rem;padding:1rem;margin-top:.8rem;font-size:.95rem;min-height:7.4rem}
+.pd b{font:500 .95rem var(--mono);color:var(--blue);display:block;margin-bottom:.3rem}
+pre{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:.6rem;padding:1.1rem 1.2rem;overflow-x:auto;font:400 .85rem/1.75 var(--mono);max-width:100%}
+.k{color:var(--vio)}.s{color:var(--mint)}.n{color:var(--amber)}.cm{color:var(--mute)}.f{color:var(--blue)}
+/* projects */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem}
+.repo{background:var(--panel);border:1px solid var(--line);border-radius:.7rem;padding:1.4rem;display:flex;flex-direction:column;gap:.7rem}
+.repo:hover{border-color:var(--blue)}
+.repo h3{font-size:1.25rem;font-family:var(--mono);font-weight:500;color:var(--blue)}
+.repo p{margin:0;font-size:.97rem}
+.repo .by{font:400 .8rem var(--mono);color:var(--mute)}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:auto;padding-top:.4rem}
+.tags span{font:400 .75rem var(--mono);color:var(--cyan);border:1px solid var(--line);border-radius:2rem;padding:.1rem .6rem}
+.repo.live{grid-column:1/-1;border-color:color-mix(in srgb,var(--mint) 50%,var(--line))}
+.repo.live a{font:500 .88rem var(--mono)}
+.more{margin-top:1.4rem;color:var(--mute);font-size:.95rem}
+/* about */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem}
+.stat div{background:var(--panel);border:1px solid var(--line);border-radius:.6rem;padding:1rem}
+.stat b{display:block;font:700 2rem/1 var(--disp);color:var(--blue);margin-bottom:.4rem}
+.stat span{font-size:.85rem;color:var(--mute);line-height:1.4;display:block}
+.ed{display:flex;justify-content:space-between;gap:1rem;padding:.8rem 0;border-top:1px solid var(--line)}
+.ed small{display:block;color:var(--mute);font-size:.88rem}
+.ed em{font:500 1rem var(--mono);font-style:normal;color:var(--amber);white-space:nowrap}
+h3.k2{font:500 .9rem var(--mono);color:var(--mute);margin-bottom:.7rem}
+/* footer */
+footer{border-top:1px solid var(--line);padding:5rem 0 4rem}
+footer h2{font-size:clamp(2.2rem,6vw,4rem);letter-spacing:-.03em}
+footer p{color:var(--mute);max-width:30rem}
+.mail{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:1.6rem}
+.mail code{font-size:1rem;background:var(--panel);border:1px solid var(--line);padding:.6rem .9rem;border-radius:.45rem}
+small.cp{font:400 .8rem var(--mono);color:var(--mint)}
+.foot{margin-top:3rem;font:400 .8rem var(--mono);color:var(--mute)}
+/* palette */
+#pal{position:fixed;inset:0;background:#0009;z-index:40;display:none;align-items:flex-start;justify-content:center;padding:calc(12vh + env(safe-area-inset-top,0px)) 1rem 1rem}
+#pal.on{display:flex}
+.pbox{width:100%;max-width:34rem;background:var(--panel);border:1px solid var(--line);border-radius:.8rem;overflow:hidden;box-shadow:0 30px 80px #000a}
+.pbox input{width:100%;background:none;border:0;border-bottom:1px solid var(--line);padding:1rem 1.1rem;color:var(--ink);font:400 1rem var(--mono)}
+.pbox input:focus-visible{outline:none}
+.pbox ul{list-style:none;margin:0;padding:.4rem;max-height:18rem;overflow-y:auto}
+.pbox li{padding:.65rem .8rem;border-radius:.4rem;cursor:pointer;display:flex;justify-content:space-between;gap:1rem;font:400 .9rem var(--mono)}
+.pbox li span{color:var(--mute)}
+.pbox li[aria-selected=true]{background:var(--panel2);color:var(--blue)}
+@media (max-width:820px){.hero{grid-template-columns:1fr;padding-top:3rem;gap:2rem}.two,.grid,.flow{grid-template-columns:1fr}header.bar nav{display:none}#out{height:18rem}.stat b{font-size:1.6rem}section{padding:3.5rem 0}}
+@media (max-width:420px){.stat{grid-template-columns:1fr}kbd{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.pipe i{animation:none}}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<header class="bar"><div class="w">
+  <a class="brand" href="#top"><i>rijul</i>@<b>iiitd</b>:~$</a>
+  <nav aria-label="Sections"><a href="#experience">experience</a><a href="#projects">projects</a><a href="#about">about</a><a href="#contact">contact</a></nav>
+  <button class="chip" id="openpal" type="button" aria-label="Open command menu">Jump to<kbd>Ctrl K</kbd></button>
+  <button class="chip" id="theme" type="button" aria-label="Switch colour theme">Theme</button>
+</div></header>
+
+<main id="top"><div class="w">
+<div class="hero">
+  <div>
+    <p class="tag"><b>$</b> B.Tech CSE · IIIT Delhi</p>
+    <h1>Rijul<br><span>Singhal</span></h1>
+    <p class="lede">I build data pipelines, models and dashboards, and I care about finance and decisions made under uncertainty.</p>
+    <div class="cta">
+      <a class="btn p" href="#experience">View my work</a>
+      <a class="btn" href="https://olympic-da.streamlit.app" target="_blank" rel="noopener">Live app</a>
+      <a class="btn" href="mailto:rijul23432@iiitd.ac.in">Email</a>
+      <a class="btn" data-link="github" target="_blank" rel="noopener" hidden>GitHub</a>
+      <a class="btn" data-link="linkedin" target="_blank" rel="noopener" hidden>LinkedIn</a>
+    </div>
+  </div>
+  <div class="win" aria-label="Interactive terminal">
+    <div class="tb"><s></s><s></s><s></s><span>rijul — terminal</span></div>
+    <div id="out" role="log" aria-live="polite"></div>
+    <div class="row"><span class="pr">$</span><input id="in" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Type a command, for example help"></div>
+    <div class="hint" id="hint"></div>
+  </div>
+</div>
+
+<section id="experience">
+  <div class="sh"><h2>Experience</h2><code>git log --work</code></div>
+  <div class="log">
+    <h3>Data Engineering Intern · HCLTech</h3>
+    <div class="meta">Jun–Jul 2026 · HCLTech Cadre Program · mentor: Vijender Victor Singh</div>
+    <p style="margin:0">Designed and built a production-grade retail analytics platform on Snowflake, from raw source tables to a live executive dashboard.</p>
+    <div class="flow">
+      <div>
+        <div class="pipe" role="tablist" aria-label="Medallion layers">
+          <button role="tab" id="t-bronze" data-l="bronze" aria-selected="true" aria-controls="pd">Bronze</button><i aria-hidden="true"></i>
+          <button role="tab" id="t-silver" data-l="silver" aria-selected="false" aria-controls="pd" tabindex="-1">Silver</button><i aria-hidden="true"></i>
+          <button role="tab" id="t-gold" data-l="gold" aria-selected="false" aria-controls="pd" tabindex="-1">Gold</button>
+        </div>
+        <div class="pd" id="pd" role="tabpanel" aria-live="polite"></div>
+      </div>
+<pre><span class="cm"># what shipped</span>
+<span class="k">platform</span> = {
+  <span class="s">"pipelines"</span>:     <span class="n" data-n="pipelines">14</span>,
+  <span class="s">"source_tables"</span>: <span class="n" data-n="sources">9</span>,
+  <span class="s">"fact_tables"</span>:   <span class="n" data-n="facts">3</span>,
+  <span class="s">"dim_tables"</span>:    <span class="n" data-n="dims">4</span>,
+  <span class="s">"rbac_roles"</span>:    <span class="n" data-n="roles">4</span>,
+  <span class="s">"credit_cap"</span>:    <span class="n" data-n="credits">50</span>,  <span class="cm"># per month</span>
+  <span class="s">"dashboard"</span>:     <span class="s">"Streamlit, <span data-n="pages">5</span> pages"</span>,
+}</pre>
+    </div>
+    <ul>
+      <li>Kimball star schema with SCD Type 1 and 2 history, and CDC pipelines using Streams, Tasks and Dynamic Tables for incremental MERGE loads.</li>
+      <li>Dynamic PII masking, row-level access policies, least-privilege RBAC and automated primary and foreign key tests.</li>
+      <li>Multi-cluster auto-suspend warehouses and tiered resource monitors to keep cost in check.</li>
+      <li>Dashboard views: Executive, Product, Store, Customer and Inventory, all on live Gold-layer data.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="sh"><h2>Projects</h2><code>ls ~/projects</code></div>
+  <div class="grid">
+    <article class="repo live"><h3>olympic-performance-dashboard</h3><div class="by">self project · Jun–Jul · deployed</div>
+      <p>An interactive dashboard on Olympic Games data through 2016, with country-wise and athlete-wise performance views.</p>
+      <a href="https://olympic-da.streamlit.app" target="_blank" rel="noopener">olympic-da.streamlit.app</a>
+      <a class="code" data-repo="olympic" target="_blank" rel="noopener" hidden>View code on GitHub</a>
+      <div class="tags"><span>Python</span><span>Streamlit</span><span>Plotly</span><span>Pandas</span></div></article>
+    <article class="repo"><h3>music-collab-network</h3><div class="by">guide: Ganesh Bagler · Nov 2025</div>
+      <p>A large artist collaboration graph that shows where influence sits in the music industry. Community detection and centrality (degree, betweenness, eigenvector) rank artists and test network resilience.</p>
+      <a class="code" data-repo="music" target="_blank" rel="noopener" hidden>View code on GitHub</a>
+      <div class="tags"><span>Python</span><span>NetworkX</span><span>Network science</span></div></article>
+    <article class="repo"><h3>au-sfb-financial-analysis</h3><div class="by">guide: P. Vajpayee · Nov 2025</div>
+      <p>A five-year comparison (FY2021–FY2025) of a listed bank’s statements, ratios and accounting policies, plus a 5-year SIP model benchmarked against the sector.</p>
+      <a class="code" data-repo="bank" target="_blank" rel="noopener" hidden>View code on GitHub</a>
+      <div class="tags"><span>Finance</span><span>Ratio analysis</span><span>SIP model</span></div></article>
+    <article class="repo"><h3>crop-yield-estimation</h3><div class="by">guide: Rajiv Ratn Shah</div>
+      <p>A regression model that predicts crop yield from weather and pollution features across Indian regions, with feature-importance analysis to generalise better between regions.</p>
+      <a class="code" data-repo="crop" target="_blank" rel="noopener" hidden>View code on GitHub</a>
+      <div class="tags"><span>Python</span><span>Regression</span><span>ML</span></div></article>
+    <article class="repo"><h3>more-builds</h3><div class="by">coursework and side projects</div>
+      <p>An online antique auction database in MySQL (team of 3, guide Mukesh Mohania), an Angry Birds-style physics game in Java with LibGDX (team of 2), error bounds for the Prime Number Theorem, and an energy-saving app prototype.</p>
+      <a class="code" data-repo="more" target="_blank" rel="noopener" hidden>View code on GitHub</a>
+      <div class="tags"><span>MySQL</span><span>Java</span><span>LibGDX</span></div></article>
+  </div>
+</section>
+
+<section id="about">
+  <div class="sh"><h2>About</h2><code>cat about.md</code></div>
+  <div class="stat">
+    <div><b data-n="gate">3805</b><span>All India Rank, GATE CSE 2026</span></div>
+    <div><b data-n="jee">5301</b><span>All India Rank, JEE Main. Qualified JEE Advanced.</span></div>
+    <div><b data-n="boards" data-suf="%">95%</b><span>in both CBSE Class X and Class XII</span></div>
+  </div>
+  <div class="two">
+    <div>
+      <h3 class="k2"># education</h3>
+      <div class="ed"><div>B.Tech, Computer Science<small>IIIT Delhi · 2023–present</small></div><em data-n="cgpa" data-suf=" CGPA">7.41 CGPA</em></div>
+      <div class="ed"><div>CBSE Class XII<small>DAV Sreshtha Vihar, Delhi · 2023</small></div><em data-n="boards" data-suf="%">95%</em></div>
+      <div class="ed"><div>CBSE Class X<small>DPS Indirapuram · 2021</small></div><em data-n="boards" data-suf="%">95%</em></div>
+      <p class="more">Also completed a Machine Learning and Deep Learning specialization on Udemy.</p>
+      <h3 class="k2" style="margin-top:1.6rem"># outside the editor</h3>
+      <p style="margin:0">Sports and fitness, finance and economics, geopolitics, music.</p>
+    </div>
+    <div>
+      <h3 class="k2"># skills.py</h3>
+<pre><span class="k">class</span> <span class="f">Rijul</span>:
+  languages = [<span class="s">"Python"</span>, <span class="s">"C++"</span>, <span class="s">"Java"</span>,
+               <span class="s">"SQL"</span>, <span class="s">"C"</span>]
+  ml        = [<span class="s">"PyTorch"</span>, <span class="s">"TensorFlow"</span>,
+               <span class="s">"Pandas"</span>, <span class="s">"NumPy"</span>]
+  viz_data  = [<span class="s">"Matplotlib"</span>, <span class="s">"Plotly"</span>,
+               <span class="s">"Streamlit"</span>, <span class="s">"NetworkX"</span>]
+  stores    = [<span class="s">"Snowflake"</span>, <span class="s">"MySQL"</span>]
+  research  = [<span class="s">"Finance"</span>, <span class="s">"Multi-armed bandits"</span>,
+               <span class="s">"Game theory"</span>, <span class="s">"Network science"</span>,
+               <span class="s">"Sequential decision making"</span>,
+               <span class="s">"Machine learning"</span>]</pre>
+    </div>
+  </div>
+</section>
+</div></main>
+
+<footer id="contact"><div class="w">
+  <h2>Let’s build something.</h2>
+  <p>Open to internships, research projects and conversations about data, ML and finance.</p>
+  <div class="mail"><code data-email>rijul23432@iiitd.ac.in</code><button class="btn" id="copy" type="button">Copy email</button><a class="btn p" href="mailto:rijul23432@iiitd.ac.in">Send email</a><a class="btn" data-link="github" target="_blank" rel="noopener" hidden>GitHub</a><a class="btn" data-link="linkedin" target="_blank" rel="noopener" hidden>LinkedIn</a><small class="cp" id="cpm" role="status"></small></div>
+  <p class="m" style="margin-top:1rem"><a data-phone href="tel:+919411122666">+91-9411122666</a></p>
+  <div class="foot">Tip: press Ctrl K (or ⌘K) anywhere to jump around.</div>
+</div></footer>
+
+<div id="pal" role="dialog" aria-modal="true" aria-label="Command menu"><div class="pbox">
+  <input id="pq" type="text" placeholder="Type to search…" autocomplete="off" spellcheck="false" aria-label="Search commands">
+  <ul id="pl" role="listbox"></ul>
+</div></div>
+
+<script>
+/* ==================== EDIT YOUR DETAILS HERE ====================
+   Change a value, save, done. Everything below updates itself.
+   Paste your URLs between the quotes. Empty quotes = that button stays hidden.
+   repos: a project's own GitHub link. If left empty it uses your github link above. */
+var SITE={
+  email:"rijul23432@iiitd.ac.in",
+  phone:"+91-9411122666",
+  links:{
+    github:"https://github.com/RIJUL945",
+    linkedin:"https://www.linkedin.com/in/rijul-singhal-383604313/"
+  },
+  repos:{
+    olympic:"",
+    music:"",
+    bank:"",
+    crop:"",
+    more:""
+  },
+  numbers:{
+    gate:3805,
+    jee:5301,
+    boards:95,
+    cgpa:7.41,
+    pipelines:14,
+    sources:9,
+    facts:3,
+    dims:4,
+    roles:4,
+    credits:50,
+    pages:5
+  }
+};
+/* ================================================================ */
+</script>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var N=SITE.numbers;
+document.querySelectorAll('[data-n]').forEach(function(e){e.textContent=N[e.dataset.n]+(e.dataset.suf||'')});
+document.querySelectorAll('[data-link]').forEach(function(a){var u=SITE.links[a.dataset.link];if(u){a.href=u;a.hidden=false}});
+document.querySelectorAll('[data-repo]').forEach(function(a){var u=SITE.repos[a.dataset.repo]||SITE.links.github;if(u){a.href=u;a.hidden=false}});
+document.querySelectorAll('a[href^="mailto:"]').forEach(function(a){a.href='mailto:'+SITE.email});
+document.querySelectorAll('[data-email]').forEach(function(e){e.textContent=SITE.email});
+document.querySelectorAll('[data-phone]').forEach(function(e){e.textContent=SITE.phone;e.href='tel:'+SITE.phone.replace(/[^+\d]/g,'')});
+var root=document.documentElement,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function toggleTheme(){var d=root.dataset.theme?root.dataset.theme==='dark':!matchMedia('(prefers-color-scheme: light)').matches;root.dataset.theme=d?'light':'dark'}
+$('theme').addEventListener('click',toggleTheme);
+/* progress */
+function prog(){var h=root.scrollHeight-innerHeight;$('prog').style.width=(h>0?scrollY/h*100:0)+'%'}
+addEventListener('scroll',prog,{passive:true});prog();
+/* medallion */
+var L={bronze:["bronze/ raw landing","The "+N.sources+" source tables land untouched, so every later step can be traced and replayed from the original."],
+silver:["silver/ cleaned and tracked","Data is validated and conformed. Incremental MERGE loads, PII masking and key-integrity tests run here."],
+gold:["gold/ ready for questions","The star schema, with "+N.facts+" fact and "+N.dims+" dimension tables and full SCD history, feeds the "+N.pages+"-page dashboard."]};
+var tabs=[].slice.call(document.querySelectorAll('.pipe button'));
+function show(k){tabs.forEach(function(b){var on=b.dataset.l===k;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1});
+var p=$('pd');p.setAttribute('aria-labelledby','t-'+k);p.innerHTML='<b></b><span></span>';p.firstChild.textContent=L[k][0];p.lastChild.textContent=L[k][1]}
+tabs.forEach(function(b,i){b.addEventListener('click',function(){show(b.dataset.l)});
+b.addEventListener('keydown',function(e){var n=e.key==='ArrowRight'?i+1:e.key==='ArrowLeft'?i-1:null;if(n===null)return;n=(n+tabs.length)%tabs.length;tabs[n].focus();show(tabs[n].dataset.l)})});
+show('bronze');
+/* terminal */
+var out=$('out'),inp=$('in'),hist=[],hi=0;
+var C={
+about:'<span class="hl">Rijul Singhal</span>\nB.Tech CSE, IIIT Delhi (2023-present, CGPA '+N.cgpa+')\nInterested in data engineering, ML and finance.\nGATE CSE 2026: AIR '+N.gate+' · JEE Main: AIR '+N.jee+'.',
+whoami:'<span class="hl">rijul singhal</span> <span class="c">// data · ml · finance</span>',
+experience:'<span class="am">Data Engineering Intern, HCLTech</span> <span class="c">(Jun-Jul 2026)</span>\n- Snowflake retail analytics platform, Bronze > Silver > Gold\n- '+N.pipelines+' SQL pipelines, star schema, SCD 1 and 2, CDC loads\n- PII masking, row-level access, RBAC, cost monitors\n- '+N.pages+'-page Streamlit dashboard on live Gold data',
+projects:'<span class="am">olympic-performance-dashboard</span>  live Streamlit app\n<span class="am">music-collab-network</span>  NetworkX, centrality, communities\n<span class="am">au-sfb-financial-analysis</span>  5-year bank study + SIP model\n<span class="am">crop-yield-estimation</span>  regression across Indian regions',
+skills:'<span class="vi">languages</span>  Python, C++, Java, SQL, C\n<span class="vi">ml/data</span>    PyTorch, TensorFlow, Pandas, NumPy, NetworkX\n<span class="vi">viz</span>        Matplotlib, Plotly, Streamlit\n<span class="vi">stores</span>     Snowflake, MySQL',
+education:'IIIT Delhi, B.Tech CSE ........ '+N.cgpa+' CGPA (2023-present)\nDAV Sreshtha Vihar, XII ..... '+N.boards+'% (2023)\nDPS Indirapuram, X .......... '+N.boards+'% (2021)',
+contact:'email  '+SITE.email+'\nphone  '+SITE.phone+(SITE.links.github?'\ngithub  '+SITE.links.github:'')+(SITE.links.linkedin?'\nlinkedin  '+SITE.links.linkedin:''),
+help:'<span class="c">Try one of these:</span>\nabout  experience  projects  skills  education  contact\ntheme  clear  open  github  linkedin'
+};
+C.ls=C.projects;C.cat=C.about;
+function line(h,t){var d=document.createElement('div');d.className='ln';if(t)d.textContent=h;else d.innerHTML=h;out.appendChild(d);out.scrollTop=out.scrollHeight}
+function run(raw){var c=raw.trim().toLowerCase();if(!c)return;line('<span class="pr">$</span> '+c.replace(/[<>&]/g,''));
+if(c==='clear'){out.innerHTML='';return}
+if(c==='theme'){toggleTheme();line('theme switched','t');return}
+if(c==='open'){line('opening olympic-da.streamlit.app ...','t');open('https://olympic-da.streamlit.app','_blank','noopener');return}
+if(c==='github'||c==='linkedin'){var u=SITE.links[c];if(u){line('opening '+c+' ...','t');open(u,'_blank','noopener')}else line(c+' link is not set yet','t');return}
+if(c.indexOf('sudo')===0){line('<span class="am">permission granted.</span> Rijul is available for internships. Run <span class="hl">contact</span>.');return}
+if(C[c]){line(C[c]);return}
+line('<span class="rose" style="color:var(--rose)">command not found:</span> '+c.replace(/[<>&]/g,'')+'. Type <span class="hl">help</span>.')}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+async function boot(){var seq=['whoami','about','help'];
+for(var i=0;i<seq.length;i++){var cmd=seq[i];
+if(reduce){run(cmd);continue}
+var d=document.createElement('div');d.className='ln';d.innerHTML='<span class="pr">$</span> ';var t=document.createTextNode('');d.appendChild(t);out.appendChild(d);
+for(var j=0;j<cmd.length;j++){t.nodeValue+=cmd[j];await sleep(55)}
+await sleep(160);d.remove();run(cmd);await sleep(380)}}
+inp.addEventListener('keydown',function(e){
+if(e.key==='Enter'){var v=inp.value;if(v.trim()){hist.push(v);hi=hist.length}run(v);inp.value=''}
+else if(e.key==='ArrowUp'&&hist.length){hi=Math.max(0,hi-1);inp.value=hist[hi];e.preventDefault()}
+else if(e.key==='ArrowDown'&&hist.length){hi=Math.min(hist.length,hi+1);inp.value=hist[hi]||'';e.preventDefault()}});
+['about','experience','projects','skills','education','contact'].forEach(function(c){var b=document.createElement('button');b.type='button';b.textContent=c;b.addEventListener('click',function(){run(c)});$('hint').appendChild(b)});
+boot();
+/* copy */
+$('copy').addEventListener('click',function(){var m=$('cpm');
+try{navigator.clipboard.writeText(SITE.email).then(function(){m.textContent='Copied'},function(){m.textContent='Select the address to copy'})}catch(e){m.textContent='Select the address to copy'}});
+/* palette */
+var items=[['Experience','section','#experience'],['Projects','section','#projects'],['About and skills','section','#about'],['Contact','section','#contact'],
+['Open live Olympic dashboard','link','https://olympic-da.streamlit.app'],['Send email','link','mailto:'+SITE.email],['Toggle theme','action','theme']];
+if(SITE.links.github)items.push(['Open GitHub','link',SITE.links.github]);
+if(SITE.links.linkedin)items.push(['Open LinkedIn','link',SITE.links.linkedin]);
+var pal=$('pal'),pq=$('pq'),pl=$('pl'),cur=0,shown=[],last=null;
+function render(){var q=pq.value.toLowerCase();shown=items.filter(function(i){return i[0].toLowerCase().indexOf(q)>-1});cur=Math.min(cur,Math.max(0,shown.length-1));pl.innerHTML='';
+shown.forEach(function(it,i){var li=document.createElement('li');li.setAttribute('role','option');li.setAttribute('aria-selected',i===cur);var a=document.createElement('div');a.textContent=it[0];var s=document.createElement('span');s.textContent=it[1];li.appendChild(a);li.appendChild(s);li.addEventListener('click',function(){go(it)});pl.appendChild(li)});
+if(!shown.length){var e=document.createElement('li');e.textContent='No match';pl.appendChild(e)}}
+function openPal(){last=document.activeElement;pal.classList.add('on');pq.value='';cur=0;render();pq.focus()}
+function closePal(){pal.classList.remove('on');if(last)last.focus()}
+function go(it){closePal();if(it[1]==='section')location.hash=it[2].slice(1);else if(it[1]==='link'){if(it[2].indexOf('http')===0)open(it[2],'_blank','noopener');else location.href=it[2]}else toggleTheme()}
+$('openpal').addEventListener('click',openPal);
+pal.addEventListener('click',function(e){if(e.target===pal)closePal()});
+pq.addEventListener('input',function(){cur=0;render()});
+pq.addEventListener('keydown',function(e){
+if(e.key==='ArrowDown'){cur=Math.min(shown.length-1,cur+1);render();e.preventDefault()}
+else if(e.key==='ArrowUp'){cur=Math.max(0,cur-1);render();e.preventDefault()}
+else if(e.key==='Enter'&&shown[cur]){go(shown[cur])}
+else if(e.key==='Escape'){closePal()}});
+addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();pal.classList.contains('on')?closePal():openPal()}else if(e.key==='Escape'&&pal.classList.contains('on'))closePal()});
+})();
+</script>
+</body>
+</html>
